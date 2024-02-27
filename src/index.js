@@ -4,34 +4,43 @@ import Player from "./playerFactory.js";
 
 const playGame = () => {
     const player = new Player('player');
+    const playerBoard = player.board;
     const computer = new Player('computer');
+    const computerBoard = computer.board;
 
     const game = gameController(player, computer);
     const dom = DOM(player, computer);
 
     const handlePlayerAttack = (event) => {
-        const coordinates = game.getClickedCell(event);
-        if (player.checkCoordinates(coordinates)) return;
-        player.attack(computer.getBoard(), coordinates);
-        dom.displayMove();
-        removeListeners()
-        if (computer.getBoard().checkGameOver()) {
-            alert('You win')
+        if (!player.turn) return;
+
+        const coordinates = [event.target.dataset.row, event.target.dataset.col];
+        if (!player.checkCoordinates(coordinates)) return;
+
+        const attack = player.playerAttack(coordinates, computerBoard);
+
+        (game.isHit(attack)) ? dom.displayHit() : dom.displayMiss();
+
+        if (game.checkWinner()) {
+            game.gameOver();
         } else {
-            setTimeout(handleCPUAttack, 500)
+            game.changeTurns();
+            setTimeout(handleCPUAttack, 500);
         }
     }
 
     const handleCPUAttack = () => {
-        game.changeTurns()
-        computer.randomAttack(player.getBoard());
-        dom.displayMove();
-        game.changeTurns()
-        if (player.getBoard().checkGameOver()) {
-            console.log('COmputer Wins')
+        if (!computer.turn) return;
+
+        const attack = computer.computerAttack(playerBoard);
+
+        (game.isHit(attack)) ? dom.displayHit() : dom.displayMiss();
+
+        if (game.checkWinner()) {
+            game.gameOver();
         } else {
-            addListeners()
-        }   
+            game.changeTurns();
+        }
     }
 
     const addListeners = () => {
@@ -45,13 +54,12 @@ const playGame = () => {
     }
 
     const init = () => {
-        dom.createBoards();
+        dom.displayBoards();
         game.placeComputerShips();
         game.placePlayerShips();
         dom.displayPlayerShips()
-        game.startTurn()
+        game.firstTurn()
         addListeners()
-        
     }
 
     return { init }

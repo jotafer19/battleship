@@ -21,19 +21,19 @@ export default class Player {
   }
 
   changeTurn() {
-    (this.turn) ? this.turn = false : this.turn = true;
+    this.turn ? this.turn = false : this.turn = true;
   }
 
   randomCoordinates() {
-    let x = Math.floor(Math.random() * 10);
-    let y = Math.floor(Math.random() * 10);
+    let row = Math.floor(Math.random() * 10);
+    let col = Math.floor(Math.random() * 10);
 
-    while (!this.checkCoordinates([x, y])) {
-      x = Math.floor(Math.random() * 10);
-      y = Math.floor(Math.random() * 10);
+    while (!this.checkCoordinates([row, col])) {
+      row = Math.floor(Math.random() * 10);
+      col = Math.floor(Math.random() * 10);
     }
 
-    return [x, y];
+    return [row, col];
   }
 
   checkCoordinates(coordinates) {

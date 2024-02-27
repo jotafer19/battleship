@@ -1,8 +1,8 @@
 const DOM = (player, computer) => {
-  const playerBoard = player.getBoard();
-  const computerBoard = computer.getBoard();
+  const playerBoard = player.board;
+  const computerBoard = computer.board;
 
-  const createBoards = () => {
+  const displayBoards = () => {
     const playerBoard = document.querySelector(".player.board");
     const computerBoard = document.querySelector(".computer.board");
     for (let i = 0; i < 10; i++) {
@@ -30,33 +30,41 @@ const DOM = (player, computer) => {
     })
 
     shipPositions.forEach(coordinates => {
-      const [x, y] = coordinates;
-      const cell = document.querySelector(`.player .cell[data-row="${x}"][data-col="${y}"]`);
+      const [row, col] = coordinates;
+      const cell = document.querySelector(`.player .cell[data-row="${row}"][data-col="${col}"]`);
       cell.classList.add('ship');
     })
   }
 
-  const displayMove = () => {
-    let attackedCell;
-    let displayCell;
-
-    if (player.getTurn()) {
-      const [x, y] = player.attacksDone.at(-1);
-      attackedCell = computerBoard.board[x][y];
-      displayCell = document.querySelector(`.computer .cell[data-row="${x}"][data-col="${y}"]`);
-    } else if (computer.getTurn()) {
-      const [x, y] = computer.attacksDone.at(-1);
-      attackedCell = playerBoard.board[x][y];
-      displayCell = document.querySelector(`.player .cell[data-row="${x}"][data-col="${y}"]`);
+  const displayHit = () => {
+    if (player.turn) {
+      const [row, col] = player.attacksDone.at(-1);
+      const cell = document.querySelector(`.computer .cell[data-row="${row}"][data-col="${col}"]`);
+      cell.classList.add('hit');
+    } else if (computer.turn) {
+      const [row, col] = computer.attacksDone.at(-1);
+      const cell = document.querySelector(`.player .cell[data-row="${row}"][data-col="${col}"]`);
+      cell.classList.add('hit');
     }
+  }
 
-    (attackedCell === "X") ? displayCell.classList.add('hit') : displayCell.classList.add('miss');
+  const displayMiss = () => {
+    if (player.turn) {
+      const [row, col] = player.attacksDone.at(-1);
+      const cell = document.querySelector(`.computer .cell[data-row="${row}"][data-col="${col}"]`);
+      cell.classList.add('miss');
+    } else if (computer.turn) {
+      const [row, col] = computer.attacksDone.at(-1);
+      const cell = document.querySelector(`.player .cell[data-row="${row}"][data-col="${col}"]`);
+      cell.classList.add('miss');
+    }
   }
 
   return {
-    createBoards,
+    displayBoards,
     displayPlayerShips,
-    displayMove,
+    displayHit,
+    displayMiss
   };
 };
 

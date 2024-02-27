@@ -28,10 +28,6 @@ const gameController = (player, computer) => {
     computer.changeTurn();
   }
 
-  const checkWinner = () => {
-    (player.turn) ? computerBoard.allShipsSunk() : playerBoard.allShipsSunk();
-  };
-
   const getClickedCell = (event) => {
       const row = parseInt(event.target.dataset.row)
       const col = parseInt(event.target.dataset.col);
@@ -39,13 +35,28 @@ const gameController = (player, computer) => {
       return [row, col];
   };
 
+  const isHit = (attack) => {
+    return attack;
+  }
+
+  const checkWinner = () => {
+    return player.turn ? computerBoard.allShipsSunk() : playerBoard.allShipsSunk();
+  }
+
+  const gameOver = () => {
+    player.turn = false;
+    computer.turn = false;
+  }
+
   return { 
     placePlayerShips,
     placeComputerShips,
-    getClickedCell,
     firstTurn,
     changeTurns,
-    checkWinner
+    getClickedCell,
+    isHit,
+    checkWinner,
+    gameOver
    };
 };
 
