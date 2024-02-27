@@ -5,8 +5,13 @@
     "es2021": true
   },
   "extends": ["airbnb-base", "prettier"],
+  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": "latest"
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {}
 }

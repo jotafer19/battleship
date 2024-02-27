@@ -1,33 +1,44 @@
-import Gameboard from "./gameboardFactory.js"
+import Board from "./boardFactory.js";
 
-class Player {
-    constructor() {
-        this.gameboard = new Gameboard();
+export default class Player {
+  constructor(name) {
+    this.name = name;
+    this.board = new Board();
+    this.attacksDone = [];
+    this.turn = false;
+  }
+
+  playerAttack(coordinates, computerBoard) {
+    if (!this.checkCoordinates(coordinates)) return;
+    this.attacksDone.push(coordinates);
+    return computerBoard.receiveAttack(coordinates);
+  }
+
+  computerAttack(playerBoard) {
+    const coordinates = this.randomCoordinates();
+    this.attacksDone.push(coordinates);
+    return playerBoard.receiveAttack(coordinates);
+  }
+
+  randomCoordinates() {
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+
+    while (!this.checkCoordinates([x, y])) {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
     }
 
-    getGameboard() {
-        return this.gameboard;
+    return [x, y];
+  }
+
+  checkCoordinates(coordinates) {
+    const [row, col] = coordinates;
+
+    for (let element of this.attacksDone) {
+      if (element[0] === row && element[1] === col) return false;
     }
 
-    attack(enemyBoard, coordinates) {
-        return enemyBoard.receiveAttack(coordinates);
-    }
+    return true;
+  }
 }
-
-const player1 = new Player();
-const player2 = new Player();
-
-player2.makeAttack = () => {
-    let attackDone = false;
-
-    while (!attackDone) {
-        const x = Math.floor(Math.random() * 10);
-        const y = Math.floor(Math.random() * 10);
-
-        try {
-            
-        }
-    }
-}
-
-console.log(player2.makeAttack())

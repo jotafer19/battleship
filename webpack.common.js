@@ -1,8 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
-module.exports = {
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+
+const commonConfig = {
   entry: {
     app: "./src/index.js",
   },
@@ -42,3 +44,5 @@ module.exports = {
     ],
   },
 };
+
+export default commonConfig;
