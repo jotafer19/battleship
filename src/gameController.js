@@ -1,5 +1,3 @@
-import Player from "./playerFactory.js";
-
 const gameController = (player, computer) => {
   const playerBoard = player.board;
   const computerBoard = computer.board;
@@ -20,8 +18,9 @@ const gameController = (player, computer) => {
     computerBoard.placeShips("patrolBoat", [5, 0], 'row');
   };
 
-  const startTurn = () => {
-    player.changeTurn()
+  const firstTurn = () => {
+    player.turn = true;
+    computer.turn = false;
   }
 
   const changeTurns = () => {
@@ -30,7 +29,7 @@ const gameController = (player, computer) => {
   }
 
   const checkWinner = () => {
-    (player.getTurn()) ? playerBoard.checkGameOver() : computerBoard.checkGameOver();
+    (player.turn) ? computerBoard.allShipsSunk() : playerBoard.allShipsSunk();
   };
 
   const getClickedCell = (event) => {
@@ -44,7 +43,7 @@ const gameController = (player, computer) => {
     placePlayerShips,
     placeComputerShips,
     getClickedCell,
-    startTurn,
+    firstTurn,
     changeTurns,
     checkWinner
    };
