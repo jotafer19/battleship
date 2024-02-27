@@ -20,6 +20,10 @@ export default class Player {
     return playerBoard.receiveAttack(coordinates);
   }
 
+  changeTurn() {
+    (this.turn) ? this.turn = false : this.turn = true;
+  }
+
   randomCoordinates() {
     let x = Math.floor(Math.random() * 10);
     let y = Math.floor(Math.random() * 10);
