@@ -6,6 +6,10 @@ export default class Player {
     this.board = new Board();
     this.attacksDone = [];
     this.turn = false;
+    this.lastAttackHit = false;
+    this.hitCoordinates = [];
+    this.lastHitCoordinate;
+    this.nextAttackCoordinates = [];
   }
 
   playerAttack(coordinates, computerBoard) {
@@ -15,9 +19,50 @@ export default class Player {
   }
 
   computerAttack(playerBoard) {
+    if (!this.lastAttackHit || !this.nextAttackCoordinates.length) {
+      const attack = this.randomComputerAttack(playerBoard);
+      if (attack) return this.computerAttackHits();
+    } else if (this.lastAttackHit && this.nextAttackCoordinates.length) {
+      const coordinates = this.nextAttackCoordinates.shift();
+      this.attacksDone.push(coordinates);
+      const attack = playerBoard.receiveAttack(coordinates);
+      if (attack) {
+        return this.computerAttackHits();
+      } else if (!attack && !this.nextAttackCoordinates.length) {
+        this.lastAttackHit = false;
+        this.lastHitCoordinate = null;
+        this.nextAttackCoordinates = [];
+        return false;
+      }
+    }
+  }
+
+  randomComputerAttack(playerBoard) {
     const coordinates = this.randomCoordinates();
     this.attacksDone.push(coordinates);
     return playerBoard.receiveAttack(coordinates);
+  }
+
+  computerAttackHits() {
+    this.lastAttackHit = true;
+    this.hitCoordinates.push(this.attacksDone.at(-1));
+    this.lastHitCoordinate = this.hitCoordinates.at(-1);
+    const moves = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    moves.forEach(move => {
+      const newRow = move[0] + this.lastHitCoordinate[0];
+      const newCol = move[1] + this.lastHitCoordinate[1];
+      if (!this.checkCoordinates([newRow, newCol]) || (newRow < 0 || newCol < 0 || newRow > 9 || newCol > 9)) return;
+      this.nextAttackCoordinates.push([newRow, newCol]);
+    })
+
+    if (this.hitCoordinates.length > 1) {
+      if (this.lastHitCoordinate[0] === this.hitCoordinates.at(-2)[0]) {
+        this.nextAttackCoordinates = this.nextAttackCoordinates.filter(move => move[0] === this.lastHitCoordinate[0]);
+      } else if (this.lastHitCoordinate[1] === this.hitCoordinates.at(-2)[1]) {
+        this.nextAttackCoordinates = this.nextAttackCoordinates.filter(move => move[1] === this.lastHitCoordinate[1]);
+      }
+    }
+    return true;
   }
 
   changeTurn() {
