@@ -11,7 +11,7 @@ const playGame = () => {
     const game = gameController(player, computer);
     const dom = DOM(player, computer);
 
-    const handlePlayerAttack = (event) => {
+    const handlePlayerAttack = () => {
         if (!player.turn) return;
 
         const coordinates = [event.target.dataset.row, event.target.dataset.col];

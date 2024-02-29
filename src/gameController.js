@@ -3,19 +3,11 @@ const gameController = (player, computer) => {
   const computerBoard = computer.board;
 
   const placePlayerShips = () => {
-    playerBoard.placeShips("carrier", [0, 0], 'row');
-    playerBoard.placeShips("battleship", [9, 3], 'row');
-    playerBoard.placeShips("destroyer", [4, 7], 'row');
-    playerBoard.placeShips("submarine", [2, 1], 'row');
-    playerBoard.placeShips("patrolBoat", [8, 0], 'row');
+    player.randomShipPlacement();
   };
 
   const placeComputerShips = () => {
-    computerBoard.placeShips("carrier", [7, 3], 'row');
-    computerBoard.placeShips("battleship", [2, 0], 'row');
-    computerBoard.placeShips("destroyer", [0, 1], 'row');
-    computerBoard.placeShips("submarine", [3, 7], 'row');
-    computerBoard.placeShips("patrolBoat", [5, 0], 'row');
+    computer.randomShipPlacement();
   };
 
   const firstTurn = () => {

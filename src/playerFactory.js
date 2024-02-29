@@ -20,6 +20,7 @@ export default class Player {
 
   computerAttack(playerBoard) {
     if (!this.lastAttackHit || !this.nextAttackCoordinates.length) {
+      this.resetAttackStatus();
       const attack = this.randomComputerAttack(playerBoard);
       if (attack) return this.computerAttackHits();
     } else if (this.lastAttackHit && this.nextAttackCoordinates.length) {
@@ -29,12 +30,38 @@ export default class Player {
       if (attack) {
         return this.computerAttackHits();
       } else if (!attack && !this.nextAttackCoordinates.length) {
-        this.lastAttackHit = false;
-        this.lastHitCoordinate = null;
-        this.nextAttackCoordinates = [];
+        this.resetAttackStatus()
         return false;
       }
     }
+  }
+
+  resetAttackStatus() {
+    this.lastAttackHit = false;
+    this.lastHitCoordinate = null;
+    this.nextAttackCoordinates = [];
+  }
+
+  randomShipPlacement() {
+    const ships = Object.values(this.board.ships);
+    ships.forEach(ship => {
+      const placement = this.randomPlacementCoordinates(ship);
+      return this.board.placeShips(ship.name, placement.coordinates, placement.direction);
+    })
+  }
+
+  randomPlacementCoordinates(ship) {
+    let row = Math.floor(Math.random() * 10);
+    let col = Math.floor(Math.random() * 10);
+    let direction = this.randomDirection()
+
+    while (row + ship.length > 10 || col + ship.length > 10 || !this.board.shipPosition(ship, [row, col], direction)) {
+      row = Math.floor(Math.random() * 10);
+      col = Math.floor(Math.random() * 10);
+      direction = this.randomDirection()
+    }
+
+    return  { coordinates: [row, col], direction: direction }
   }
 
   randomComputerAttack(playerBoard) {
@@ -83,11 +110,15 @@ export default class Player {
 
   checkCoordinates(coordinates) {
     const [row, col] = coordinates;
-
     for (let element of this.attacksDone) {
       if (element[0] === row && element[1] === col) return false;
     }
-
     return true;
+  }
+
+  randomDirection() {
+    const direction = ['row', 'col'];
+    const position = Math.floor(Math.random() * direction.length);
+    return direction[position];
   }
 }
