@@ -4,24 +4,23 @@ import Player from "./playerFactory.js";
 
 const playGame = () => {
     const player = new Player('player');
-    const playerBoard = player.board;
     const computer = new Player('computer');
-    const computerBoard = computer.board;
 
     const game = gameController(player, computer);
     const dom = DOM(player, computer);
 
-    const handlePlayerAttack = () => {
+    const handlePlayerAttack = (event) => {
         if (!player.turn) return;
 
         const coordinates = [event.target.dataset.row, event.target.dataset.col];
         if (!player.checkCoordinates(coordinates)) return;
 
-        const attack = player.playerAttack(coordinates, computerBoard);
+        const attack = player.playerAttack(coordinates, computer.board);
 
         (game.isHit(attack)) ? dom.displayHit() : dom.displayMiss();
 
         if (game.checkWinner()) {
+            dom.displayWinner()
             game.gameOver();
         } else {
             game.changeTurns();
@@ -32,11 +31,12 @@ const playGame = () => {
     const handleCPUAttack = () => {
         if (!computer.turn) return;
 
-        const attack = computer.computerAttack(playerBoard);
+        const attack = computer.computerAttack(player.board);
 
         (game.isHit(attack)) ? dom.displayHit() : dom.displayMiss();
 
         if (game.checkWinner()) {
+            dom.displayWinner()
             game.gameOver();
         } else {
             game.changeTurns();
@@ -53,16 +53,65 @@ const playGame = () => {
         computerCells.forEach(cell => cell.removeEventListener('click', handlePlayerAttack));
     }
 
-    const init = () => {
+    const shipsPlacementHandler = () => {
+        const directionButton = document.querySelector('button.direction');
+        directionButton.addEventListener('click', dom.changeDirection);
+
+        const randomButton = document.querySelector('button.random');
+        randomButton.addEventListener('click', () => {
+            const shipsAlreadyPlaced = document.querySelectorAll('.ship');
+            if (shipsAlreadyPlaced.length !== 0) {
+                shipsAlreadyPlaced.forEach(ship => {
+                    ship.classList.remove('ship')
+                })
+                player.removeShipPlacement()
+            }
+            player.randomShipPlacement();
+            dom.displayPlayerShips()
+        })
+    }
+
+    const shipsPlacement = () => {
         dom.displayBoards();
+        dom.shipPlacement()
+        shipsPlacementHandler();
+    }
+
+    const init = () => {
         game.placeComputerShips();
-        game.placePlayerShips();
-        dom.displayPlayerShips()
         game.firstTurn()
         addListeners()
     }
 
-    return { init }
+    const start = () => {
+        const vsCPUButton = document.querySelector('.mode.vs-CPU');
+        vsCPUButton.addEventListener('click', () => {
+            document.querySelector('.mode-container').classList.toggle('inactive');
+            document.querySelector('.game.vs-CPU').classList.toggle('inactive');
+            shipsPlacement()
+        })
+        
+        const startButton = document.querySelector('button.play-game');
+        startButton.addEventListener('click', () => {
+            if (game.checkAllShipsPlaced()) {
+                document.querySelector('.info-placement').classList.toggle('inactive');
+                document.querySelector('.computer-container').classList.toggle('inactive');
+                init()
+            }
+        })
+
+        const playAgainButton = document.querySelector('button.play-again');
+        playAgainButton.addEventListener('click', () => {
+            player.resetPlayer();
+            computer.resetPlayer();
+            dom.resetInterface()
+        })
+    }
+
+    return { 
+        start
+    }
 }
 
-playGame().init()
+playGame().start()
+

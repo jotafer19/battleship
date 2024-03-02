@@ -8,7 +8,7 @@ export default class Board {
       battleship: new Ship("battleship", 4),
       destroyer: new Ship("destroyer", 3),
       submarine: new Ship("submarine", 2),
-      patrolBoat: new Ship("patrolBoat", 1),
+      patrolBoat: new Ship("patrolBoat", 2),
     };
   }
 

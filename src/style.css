@@ -13,18 +13,42 @@
   text-align: center;
 }
 
-.info-container,
-.board-container {
+main {
+  position: relative;
+}
+
+.mode-container {
+  height: 90svh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.mode {
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mode:hover {
+  background-color: #d2d2d2;
+}
+
+.display-ship {
+  background-color: rgb(182, 240, 182);
+}
+
+.game {
   width: 100svw;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5rem;
-}
-
-.info-container {
-  height: 10svh;
-  padding: 2rem;
 }
 
 .board {
@@ -52,4 +76,17 @@
   width: 50px;
   height: 50px;
   border: 1px solid black;
+}
+
+.winner {
+  height: 100px;
+  width: 200px;
+  position: absolute;
+  margin: 0 auto;
+  background-color: rgb(231, 231, 231);
+
+}
+
+.inactive {
+  display: none;
 }

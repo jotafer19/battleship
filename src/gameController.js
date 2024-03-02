@@ -1,6 +1,4 @@
 const gameController = (player, computer) => {
-  const playerBoard = player.board;
-  const computerBoard = computer.board;
 
   const placePlayerShips = () => {
     player.randomShipPlacement();
@@ -9,6 +7,12 @@ const gameController = (player, computer) => {
   const placeComputerShips = () => {
     computer.randomShipPlacement();
   };
+
+  const checkAllShipsPlaced = () => {
+    const ships = Object.values(player.board.ships);
+
+    return ships.every(ship => ship.position.length !== 0)
+  }
 
   const firstTurn = () => {
     player.turn = true;
@@ -32,7 +36,7 @@ const gameController = (player, computer) => {
   }
 
   const checkWinner = () => {
-    return player.turn ? computerBoard.allShipsSunk() : playerBoard.allShipsSunk();
+    return player.turn ? computer.board.allShipsSunk() : player.board.allShipsSunk();
   }
 
   const gameOver = () => {
@@ -43,6 +47,7 @@ const gameController = (player, computer) => {
   return { 
     placePlayerShips,
     placeComputerShips,
+    checkAllShipsPlaced,
     firstTurn,
     changeTurns,
     getClickedCell,

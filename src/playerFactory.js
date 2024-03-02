@@ -8,7 +8,7 @@ export default class Player {
     this.turn = false;
     this.lastAttackHit = false;
     this.hitCoordinates = [];
-    this.lastHitCoordinate;
+    this.lastHitCoordinate = null;
     this.nextAttackCoordinates = [];
   }
 
@@ -50,6 +50,13 @@ export default class Player {
     })
   }
 
+  removeShipPlacement() {
+    const ships = Object.values(this.board.ships);
+    ships.forEach(ship => {
+      ship.position = [];
+    })
+  }
+
   randomPlacementCoordinates(ship) {
     let row = Math.floor(Math.random() * 10);
     let col = Math.floor(Math.random() * 10);
@@ -83,9 +90,11 @@ export default class Player {
     })
 
     if (this.hitCoordinates.length > 1) {
-      if (this.lastHitCoordinate[0] === this.hitCoordinates.at(-2)[0]) {
+      if (this.lastHitCoordinate[0] === this.hitCoordinates.at(-2)[0] &&
+      this.lastHitCoordinate[1] - this.hitCoordinates.at(-2)[1] <= 1) {
         this.nextAttackCoordinates = this.nextAttackCoordinates.filter(move => move[0] === this.lastHitCoordinate[0]);
-      } else if (this.lastHitCoordinate[1] === this.hitCoordinates.at(-2)[1]) {
+      } else if (this.lastHitCoordinate[1] === this.hitCoordinates.at(-2)[1] &&
+      this.lastHitCoordinate[0] - this.hitCoordinates.at(-2)[0] <= 1) {
         this.nextAttackCoordinates = this.nextAttackCoordinates.filter(move => move[1] === this.lastHitCoordinate[1]);
       }
     }
@@ -120,5 +129,14 @@ export default class Player {
     const direction = ['row', 'col'];
     const position = Math.floor(Math.random() * direction.length);
     return direction[position];
+  }
+
+  resetPlayer() {
+    this.board = new Board();
+    this.attacksDone = [];
+    this.lastAttackHit = false;
+    this.hitCoordinates = [];
+    this.lastHitCoordinate = null;
+    this.nextAttackCoordinates = [];
   }
 }

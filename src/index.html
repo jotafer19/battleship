@@ -9,14 +9,36 @@
   </head>
   <body>
     <header class="header">BattleShips</div></header>
-    <main>
-        <div class="info-container">
+    <div class="mode-container">
+      <div class="mode vs-CPU">
+        <p>Player</p>
+        <p>vs</p>
+        <p>CPU</p>
+      </div>
+      <div class="mode vs-Player">
+        <p>Player</p>
+        <p>vs</p>
+        <p>Player</p>
+      </div>
+    </div>
+    <main class="game vs-CPU inactive">
+        <div class="player-container">
           <div class="info player">Player</div>
-          <div class="info computer">Computer</div>
-        </div>
-        <div class="board-container">
           <div class="board player"></div>
+        </div>
+        <div class="computer-container inactive">
+          <div class="info computer">Computer</div>
           <div class="board computer"></div>
+        </div>
+        <div class="info-placement">
+          <div class="ship-name">Place your carrier</div>
+          <button class="direction" value="row">Horizontal</button>
+          <button class="random">Randomize</button>
+          <button class="play-game">Start</button>
+        </div>
+        <div class="winner inactive">
+          <div class="message"></div>
+          <button class="play-again">Play Again</button>
         </div>
   </main>
     <footer class="footer"></footer>
