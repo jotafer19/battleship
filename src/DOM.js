@@ -144,7 +144,7 @@ const placementInformation = (ship) => {
   }
 
   const displayWinner = () => {
-    const winnerContainer = document.querySelector('.winner');
+    const winnerContainer = document.querySelector('.winner-container');
     const winnerMessage = document.querySelector('.winner .message')
     winnerContainer.classList.toggle('inactive');
     if (player.turn) {
@@ -166,7 +166,7 @@ const placementInformation = (ship) => {
     document.querySelector('.game.vs-CPU').classList.toggle('inactive');
     document.querySelector('.info-placement').classList.toggle('inactive');
     document.querySelector('.computer-container').classList.toggle('inactive');
-    document.querySelector('.winner').classList.toggle('inactive')
+    document.querySelector('.winner-container').classList.toggle('inactive')
     document.querySelector('.player.board').replaceChildren();
     document.querySelector('.computer.board').replaceChildren();
   }

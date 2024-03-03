@@ -38,6 +38,7 @@ export default class Player {
 
   resetAttackStatus() {
     this.lastAttackHit = false;
+    this.hitCoordinates = [];
     this.lastHitCoordinate = null;
     this.nextAttackCoordinates = [];
   }
@@ -91,11 +92,9 @@ export default class Player {
     })
 
     if (this.hitCoordinates.length > 1) {
-      if (this.lastHitCoordinate[0] === this.hitCoordinates.at(-2)[0] &&
-      this.lastHitCoordinate[1] - this.hitCoordinates.at(-2)[1] <= 1) {
+      if (this.lastHitCoordinate[0] === this.hitCoordinates.at(-2)[0]) {
         this.nextAttackCoordinates = this.nextAttackCoordinates.filter(move => move[0] === this.lastHitCoordinate[0]);
-      } else if (this.lastHitCoordinate[1] === this.hitCoordinates.at(-2)[1] &&
-      this.lastHitCoordinate[0] - this.hitCoordinates.at(-2)[0] <= 1) {
+      } else if (this.lastHitCoordinate[1] === this.hitCoordinates.at(-2)[1]) {
         this.nextAttackCoordinates = this.nextAttackCoordinates.filter(move => move[1] === this.lastHitCoordinate[1]);
       }
     }
