@@ -48,33 +48,46 @@ const playGame = () => {
         computerCells.forEach(cell => cell.addEventListener('click', handlePlayerAttack));
     }
 
-    const removeListeners = () => {
-        const computerCells = document.querySelectorAll('.computer .cell');
-        computerCells.forEach(cell => cell.removeEventListener('click', handlePlayerAttack));
-    }
-
-    const shipsPlacementHandler = () => {
+    const changeDirectionHandler = () => {
         const directionButton = document.querySelector('button.direction');
         directionButton.addEventListener('click', dom.changeDirection);
+    }
 
+    const randomPlacement = () => {
         const randomButton = document.querySelector('button.random');
         randomButton.addEventListener('click', () => {
-            const shipsAlreadyPlaced = document.querySelectorAll('.ship');
-            if (shipsAlreadyPlaced.length !== 0) {
-                shipsAlreadyPlaced.forEach(ship => {
-                    ship.classList.remove('ship')
-                })
-                player.removeShipPlacement()
+            if (game.checkAllShipsPlaced()) {
+                player.resetPlayer()
+                dom.cleanPlayerBoard()
             }
-            player.randomShipPlacement();
+            player.randomShipPlacement()
             dom.displayPlayerShips()
+
+            const cells = document.querySelectorAll('.player .cell');
+            cells.forEach(cell => {
+                cell.removeEventListener('mouseover', dom.mouseOverCell);
+                cell.removeEventListener('mouseout', dom.mouseOutCell);
+                cell.removeEventListener('click', dom.clickCell)
+            })
+        })
+    }
+
+    const shipPlacementHandler = () => {
+        const cells = document.querySelectorAll('.player .cell')
+        cells.forEach(cell => {
+          cell.addEventListener('mouseover', dom.mouseOverCell);
+    
+          cell.addEventListener('mouseout', dom.mouseOutCell);
+    
+          cell.addEventListener('click', dom.clickCell)
         })
     }
 
     const shipsPlacement = () => {
         dom.displayBoards();
-        dom.shipPlacement()
-        shipsPlacementHandler();
+        shipPlacementHandler()
+        randomPlacement()
+        changeDirectionHandler();
     }
 
     const init = () => {

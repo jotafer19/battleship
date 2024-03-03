@@ -46,6 +46,7 @@ export default class Player {
     const ships = Object.values(this.board.ships);
     ships.forEach(ship => {
       const placement = this.randomPlacementCoordinates(ship);
+      console.log(placement)
       return this.board.placeShips(ship.name, placement.coordinates, placement.direction);
     })
   }

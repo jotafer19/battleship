@@ -1,4 +1,26 @@
 const DOM = (player, computer) => {
+  const ships = [
+    {
+      name: 'carrier',
+      length: 5,
+    },
+    {
+      name: 'battleship',
+      length: 4,
+    },
+    {
+      name: 'destroyer',
+      length: 3,
+    },
+    {
+      name: 'submarine',
+      length: 2,
+    },
+    {
+      name: 'patrol',
+      length: 2,
+    }
+  ]
 
   const displayBoards = () => {
     const playerBoard = document.querySelector(".player.board");
@@ -20,51 +42,8 @@ const DOM = (player, computer) => {
     }
   };
 
-  const shipPlacement = () => {
-    const ships = [
-      {
-        name: "carrier",
-        length: 5,
-      },
-      {
-        name: "battleship",
-        length: 4,
-      },
-      {
-        name: "destroyer",
-        length: 3,
-      },
-      {
-        name: "submarine",
-        length: 2,
-      },
-      {
-        name: "patrolBoat",
-        length: 2,
-      },
-    ]
-
-    const cells = document.querySelectorAll('.player .cell')
-    cells.forEach(cell => {
-      cell.addEventListener('mouseover', (event) => {
-        if (!ships.length) return;
-        mouseOverCell(event, ships);
-      });
-
-      cell.addEventListener('mouseout', () => {
-        if (!ships.length) return;
-        mouseOutCell();
-      });
-
-      cell.addEventListener('click', (event) => {
-        if (!ships.length) return;
-        clickCell(event, ships);
-        placementInformation(ships[0])
-      })
-    })
-  }
-
-  const mouseOverCell = (event, ships) => {
+  const mouseOverCell = (event) => {
+    if (!ships.length) return;
     const ship = ships[0];
     const [row, col] = [parseInt(event.target.dataset.row), parseInt(event.target.dataset.col)];
     const direction = document.querySelector('.direction').value;
@@ -91,7 +70,8 @@ const DOM = (player, computer) => {
     })
   }
 
-  const clickCell = (event, ships) => {
+  const clickCell = (event) => {
+    if (!ships.length) return;
     const ship = ships[0];
     const coordinates = [parseInt(event.target.dataset.row), parseInt(event.target.dataset.col)];
     const direction = document.querySelector('.direction').value;
@@ -174,6 +154,13 @@ const placementInformation = (ship) => {
     }
   }
 
+  const cleanPlayerBoard = () => {
+    const allShipTiles = document.querySelectorAll('.ship');
+    allShipTiles.forEach(tile => {
+      tile.classList.remove('ship');
+    })
+  }
+
   const resetInterface = () => {
     document.querySelector('.mode-container').classList.toggle('inactive');
     document.querySelector('.game.vs-CPU').classList.toggle('inactive');
@@ -187,11 +174,14 @@ const placementInformation = (ship) => {
   return {
     displayBoards,
     displayPlayerShips,
-    shipPlacement,
+    mouseOverCell,
+    mouseOutCell,
+    clickCell,
     changeDirection,
     displayHit,
     displayMiss,
     displayWinner,
+    cleanPlayerBoard,
     resetInterface
   };
 };

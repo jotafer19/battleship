@@ -11,7 +11,7 @@ const gameController = (player, computer) => {
   const checkAllShipsPlaced = () => {
     const ships = Object.values(player.board.ships);
 
-    return ships.every(ship => ship.position.length !== 0)
+    return ships.some(ship => ship.position.length !== 0)
   }
 
   const firstTurn = () => {
