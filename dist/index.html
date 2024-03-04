@@ -15,7 +15,7 @@
         <p>vs</p>
         <p>CPU</p>
       </div>
-      <div class="mode vs-Player">
+      <div class="mode vs-player">
         <p>Player</p>
         <p>vs</p>
         <p>Player</p>
@@ -36,11 +36,35 @@
           <button class="random">Randomize</button>
           <button class="play-game">Start</button>
         </div>
-        <div class="winner inactive">
-          <div class="message"></div>
-          <button class="play-again">Play Again</button>
+        <div class="winner-container inactive">
+          <div class="winner">
+            <div class="message"></div>
+            <button class="play-again">Play Again</button>
+          </div>
         </div>
   </main>
+  <div class="game vs-player inactive">
+    <div class="player-one-container">
+      <div class="info player-one">Player</div>
+      <div class="board player-one"></div>
+    </div>
+    <div class="player-two-container inactive">
+      <div class="info player-two">Computer</div>
+      <div class="board player-two"></div>
+    </div>
+    <div class="info-placement">
+      <div class="ship-name">Place your carrier</div>
+      <button class="direction" value="row">Horizontal</button>
+      <button class="random">Randomize</button>
+      <button class="play-game">Start</button>
+    </div>
+    <div class="winner-container inactive">
+      <div class="winner">
+        <div class="message"></div>
+        <button class="play-again">Play Again</button>
+      </div>
+    </div>
+  </div>
     <footer class="footer"></footer>
   </body>
 </html>

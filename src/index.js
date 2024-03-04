@@ -122,9 +122,24 @@ const playGame = () => {
     }
 
     return { 
-        start
+        start,
     }
 }
 
 playGame().start()
 
+const playVSPlayer = () => {
+    const playerOne = new Player('playerOne');
+    const playerTwo = new Player('playerTwo');
+
+    const game = gameController();
+    const dom = DOM();
+
+    const vsPlayerGame = () => {
+        const vsPlayerButton = document.querySelector('.mode.vs-player');
+        vsPlayerButton.addEventListener('click', () => {
+            document.querySelector('.mode-container').classList.toggle('inactive');
+            document.querySelector('.game.vs-player').classList.toggle('inactive');
+        })
+    }
+}
