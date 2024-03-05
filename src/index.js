@@ -129,17 +129,45 @@ const playGame = () => {
 playGame().start()
 
 const playVSPlayer = () => {
+    const mode = 'vs-player';
     const playerOne = new Player('playerOne');
     const playerTwo = new Player('playerTwo');
 
-    const game = gameController();
-    const dom = DOM();
+    const game = gameController(playerOne, playerTwo);
+    const dom = DOM(playerOne, playerTwo, mode);
 
     const vsPlayerGame = () => {
         const vsPlayerButton = document.querySelector('.mode.vs-player');
         vsPlayerButton.addEventListener('click', () => {
             document.querySelector('.mode-container').classList.toggle('inactive');
             document.querySelector('.game.vs-player').classList.toggle('inactive');
+            shipsPlacement()
         })
     }
+
+    const shipsPlacement = () => {
+        dom.displayBoards()
+        playerOnePlaceHandler()
+    }
+
+    const playerOnePlaceHandler = () => {
+        const cells = document.querySelectorAll(`.${mode} .player-one .cell`);
+        cells.forEach(cell => {
+            cell.addEventListener('mouseover', dom.mouseOverCell);
+
+            cell.addEventListener('mouseout', dom.mouseOutCell)
+
+            cell.addEventListener('click', dom.clickCell)
+        })
+    }
+
+    const init = () => {
+        vsPlayerGame()
+    }
+
+    return {
+        init
+    }
 }
+
+playVSPlayer().init()

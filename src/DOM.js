@@ -1,4 +1,4 @@
-const DOM = (player, computer) => {
+const DOM = (player, computer, mode) => {
   const ships = [
     {
       name: 'carrier',
@@ -23,8 +23,8 @@ const DOM = (player, computer) => {
   ]
 
   const displayBoards = () => {
-    const playerBoard = document.querySelector(".player.board");
-    const computerBoard = document.querySelector(".computer.board");
+    const playerBoard = document.querySelector(`.${mode} .player-one.board`);
+    const computerBoard = document.querySelector(`.${mode} .player-two.board`);
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         const playerCell = document.createElement("div");
@@ -43,6 +43,7 @@ const DOM = (player, computer) => {
   };
 
   const mouseOverCell = (event) => {
+    console.log('hey')
     if (!ships.length) return;
     const ship = ships[0];
     const [row, col] = [parseInt(event.target.dataset.row), parseInt(event.target.dataset.col)];
@@ -51,13 +52,13 @@ const DOM = (player, computer) => {
     if (direction === "row") {
       for (let i = col; i < col + ship.length; i++) {
         if (i > 9) return;
-        const styleCell = document.querySelector(`.player .cell[data-row="${row}"][data-col="${i}"]`);
+        const styleCell = document.querySelector(`.${mode} .player-one .cell[data-row="${row}"][data-col="${i}"]`);
         styleCell.classList.add('display-ship');
       }
     } else if (direction === "col") {
       for (let i = row; i < row + ship.length; i++) {
         if (i > 9) return;
-        const styleCell = document.querySelector(`.player .cell[data-row="${i}"][data-col="${col}"]`);
+        const styleCell = document.querySelector(`.cell[data-row="${i}"][data-col="${col}"]`);
         styleCell.classList.add('display-ship');
       }
     }
