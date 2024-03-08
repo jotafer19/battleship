@@ -8,63 +8,22 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header class="header">BattleShips</div></header>
-    <div class="mode-container">
-      <div class="mode vs-CPU">
-        <p>Player</p>
-        <p>vs</p>
-        <p>CPU</p>
+    <header class="header">Battleship</header>
+    <main class="main">
+      <div class="game-mode-container inactive">
+        <div class="game-mode vs-CPU">Player vs CPU</div>
+        <div class="game-mode vs-player">Player vs Player</div>
       </div>
-      <div class="mode vs-player">
-        <p>Player</p>
-        <p>vs</p>
-        <p>Player</p>
+      <div class="game-container">
+        <div class="player-one-container active">
+          <div class="player-one board"></div>
+          <div class="player-one ship-container"></div>
+        </div>
+        <div class="player-two-container inactive">
+          <div class="player-two board"></div>
+          <div class="player-two ship-container"></div>
+        </div>
       </div>
-    </div>
-    <main class="game vs-CPU inactive">
-        <div class="player-container">
-          <div class="info player">Player</div>
-          <div class="board player"></div>
-        </div>
-        <div class="computer-container inactive">
-          <div class="info computer">Computer</div>
-          <div class="board computer"></div>
-        </div>
-        <div class="info-placement">
-          <div class="ship-name">Place your carrier</div>
-          <button class="direction" value="row">Horizontal</button>
-          <button class="random">Randomize</button>
-          <button class="play-game">Start</button>
-        </div>
-        <div class="winner-container inactive">
-          <div class="winner">
-            <div class="message"></div>
-            <button class="play-again">Play Again</button>
-          </div>
-        </div>
-  </main>
-  <div class="game vs-player inactive">
-    <div class="player-one-container">
-      <div class="info player-one">Player</div>
-      <div class="board player-one"></div>
-    </div>
-    <div class="player-two-container inactive">
-      <div class="info player-two">Computer</div>
-      <div class="board player-two"></div>
-    </div>
-    <div class="info-placement">
-      <div class="ship-name">Place your carrier</div>
-      <button class="direction" value="row">Horizontal</button>
-      <button class="random">Randomize</button>
-      <button class="play-game">Start</button>
-    </div>
-    <div class="winner-container inactive">
-      <div class="winner">
-        <div class="message"></div>
-        <button class="play-again">Play Again</button>
-      </div>
-    </div>
-  </div>
-    <footer class="footer"></footer>
+    </main>
   </body>
 </html>

@@ -1,56 +1,46 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
-
-/* HEADER */
 
 .header {
   height: 10svh;
-  width: 100svw;
-  padding: 2rem;
-  text-align: center;
-}
-
-main {
-  position: relative;
-  width: 100svw;
-  height: 90svh;
-}
-
-.mode-container {
-  height: 90svh;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.mode {
-  height: 100px;
-  width: 100px;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  cursor: pointer;
-}
-
-.mode:hover {
-  background-color: #d2d2d2;
-}
-
-.display-ship {
-  background-color: rgb(182, 240, 182);
-}
-
-.game {
-  width: 100svw;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5rem;
+}
+
+.main {
+  height: 90svh;
+  width: 100svw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.game-mode-container,
+.game-container {
+  width: 100svw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.game-mode {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.game-mode:hover {
+  background-color: grey;
+}
+
+.player-one-container,
+.player-two-container {
+  display: flex;
+  gap: 2rem;
 }
 
 .board {
@@ -59,46 +49,39 @@ main {
   border: 1px solid black;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-}
-
-.cell.ship {
-  background-color: #c3c3c3;
-}
-
-.cell.hit {
-  background-color: #ef8b8b;
-}
-
-.cell.miss {
-  background-color: rgb(105, 190, 233);
+  position: relative;
 }
 
 .cell {
-  width: 50px;
   height: 50px;
+  width: 50px;
   border: 1px solid black;
 }
 
-.winner-container {
-  position: absolute;
-  width: 100svw;
-  height: 100%;
+.cell.drag-over {
+  border: 2px dashed blue;
+}
+
+.ship-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  backdrop-filter: blur(4px);
+  gap: 1rem;
 }
 
-.winner {
-  height: 100px;
-  width: 200px;
-  padding: 2rem;
-  background-color: #e7e7e7;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.ship {
+  background-color: grey;
+  display: grid;
+  grid-auto-flow: column;
+  border-radius: 2rem;
+}
+
+.ship.dragged {
+  background-color: rgb(177, 235, 177);
+}
+
+.ship-part {
+  height: 50px;
+  width: 50px;
 }
 
 .inactive {
