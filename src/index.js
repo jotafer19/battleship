@@ -13,3 +13,4 @@ const playGame = () => {
 playGame()
 DOM().displayBoards()
 DOM().displayShipsPlayerOne()
+DOM().resetButton()

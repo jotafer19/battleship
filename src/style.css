@@ -58,12 +58,18 @@
   border: 1px solid black;
 }
 
+.cell.water {
+  background-color: blue;
+}
+
 .cell.drag-over {
   border: 2px dashed blue;
 }
 
 .ship-container {
+  width: 500px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
