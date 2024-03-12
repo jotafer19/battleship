@@ -99,7 +99,6 @@ const DOM = () => {
             const shipCoordinates = getShipCoordinates(ship, startingCoordinates);
             shipCoordinates.forEach(coordinate => allCellsUsed.push(coordinate));
         })
-    
         return allCellsUsed;
     }
 
@@ -140,40 +139,37 @@ const DOM = () => {
         event.preventDefault();
     }
 
-    const doubleClick = (event) => {
+    const shipClick = (event) => {
         const ship = event.target.closest('.ship')
+
+        if (!ship.parentNode.classList.contains('cell')) return;
+
         const startCoordinates = [parseInt(ship.dataset.row), parseInt(ship.dataset.col)];
         const direction = ship.dataset.direction;
 
         ship.classList.toggle('dragged')
+
         if (direction === "row") {
-            ship.dataset.direction = "col"
-            if (isValidPosition(ship, startCoordinates)) {
-                ship.style.gridAutoFlow = "row"
-            } else if (!isValidPosition(ship, startCoordinates)) {
-                ship.dataset.direction = "row";
-            }
+            ship.dataset.direction = "col";
+            isValidPosition(ship, startCoordinates) ? ship.style.gridAutoFlow = "row" : ship.dataset.direction = "row";
         } else if (direction === "col") {
             ship.dataset.direction = "row"
-            if (isValidPosition(ship, startCoordinates)) {
-                ship.style.gridAutoFlow = "column"
-            } else if (!isValidPosition(ship, startCoordinates)) {
-                ship.dataset.direction = "col";
-            }
+            isValidPosition(ship, startCoordinates) ? ship.style.gridAutoFlow = "column" : ship.dataset.direction = "col";
         }
+
         ship.classList.toggle('dragged')
     }
 
     const dragEnter = (event) => {
         event.preventDefault();
         const cell = event.target;
-        cell.classList.toggle('drag-over')
+        cell.classList.add('drag-over')
     }
 
     const dragLeave = (event) => {
         event.preventDefault();
         const cell = event.target;
-        cell.classList.toggle('drag-over')
+        cell.classList.remove('drag-over')
     }
 
     const dragDrop = (event) => {
@@ -181,18 +177,17 @@ const DOM = () => {
 
         const cell = event.target;
         const [row, col] = [parseInt(cell.dataset.row), parseInt(cell.dataset.col)];
-        cell.classList.toggle('drag-over')
+        cell.classList.remove('drag-over')
 
         const data = event.dataTransfer.getData('text/plain');
         const draggableShip = document.getElementById(data);
 
         try {
-            if (!isValidPosition(draggableShip, [row, col])) return;
+            if (!isValidPosition(draggableShip, [row, col]) || cell.classList.contains('ship-part')) return;
             draggableShip.style.position = "absolute";
             draggableShip.dataset.row = row;
             draggableShip.dataset.col = col;
             cell.append(draggableShip);
-            draggableShip.addEventListener('click', doubleClick)
         } catch {
             return;
         }
@@ -203,11 +198,12 @@ const DOM = () => {
         allShips.forEach(ship => {
             ship.addEventListener('dragstart', dragStart)
             ship.addEventListener('dragend', dragEnd)
+            ship.addEventListener('click', shipClick);
         })
     }
 
     const boardListeners = () => {
-        const allCells = document.querySelectorAll('.active .cell');
+        const allCells = document.querySelectorAll('.active .board .cell');
         allCells.forEach(cell => {
             cell.addEventListener('dragenter', dragEnter);
             cell.addEventListener('dragleave', dragLeave);
@@ -216,18 +212,8 @@ const DOM = () => {
         })
     }
 
-    const displayShipsPlayerOne = () => {
-        const shipsContainer = document.querySelector('.player-one.ship-container');
-        const ships = generateShips();
-        ships.forEach(ship => {
-            shipsContainer.append(ship);
-        })
-        shipListeners()
-        boardListeners()
-    }
-
-    const displayShipsPlayerTwo = () => {
-        const shipsContainer = document.querySelector('.player-two.ship-container');
+    const displayShips = () => {
+        const shipsContainer = document.querySelector('.active .ship-container');
         const ships = generateShips();
         ships.forEach(ship => {
             shipsContainer.append(ship);
@@ -251,19 +237,150 @@ const DOM = () => {
     }
 
     const getRandomCoordinates = () => {
-        let row = Math.floor(Math.random() * 10);
-        let col = Math.floor(Math.random() * 10);
+        const row = Math.floor(Math.random() * 10);
+        const col = Math.floor(Math.random() * 10);
 
-        const cellsUsed = getAllCellsUsed();
+        return [row, col];
+    }
 
-        // do... while or only while loop?
+    const getRandomDirection = () => {
+        const randomNumber = Math.floor(Math.random() * 2);
+
+        return randomNumber === 0 ? "row" : "col";
+    }
+
+    const changeDirection = (ship) => {
+        const direction = getRandomDirection();
+        if (direction === "col") {
+            ship.style.gridAutoFlow = "row";
+            ship.dataset.direction = "col";
+        }
+    }
+
+    const placeRandomly = () => {
+        resetBoard();
+        const allShips = document.querySelectorAll('.active .ship-container .ship');
+        allShips.forEach(ship => {
+            changeDirection(ship);
+            let [row, col] = getRandomCoordinates();
+            while (!isValidPosition(ship, [row, col])) [row, col] = getRandomCoordinates();
+            ship.style.position = "absolute";
+            ship.dataset.row = row;
+            ship.dataset.col = col;
+            const cell = document.querySelector(`.active .cell[data-row="${row}"][data-col="${col}"]`);
+            cell.append(ship);
+        })
+    }
+
+    const randomButton = () => {
+        const button = document.querySelector('button.randomize');
+        button.addEventListener('click', placeRandomly)
+    }
+
+    const checkShipsPlaced = () => {
+        const allShips = document.querySelectorAll('.active .cell .ship');
+
+        return allShips.length >= 5;
+    }
+
+    const placeShipsOnBoard = () => {
+        const allCellsUsed = getAllCellsUsed();
+        allCellsUsed.forEach(cell => {
+            const [row, col] = cell;
+            document.querySelector(`.active .cell[data-row="${row}"][data-col="${col}"]`).classList.toggle('ship-placed')
+        })
+    }
+
+    const changePlayerDisplay = () => {
+        const allShips = document.querySelectorAll('.active .ship');
+        const playerOne = document.querySelector('.player-one-container');
+        const playerTwo = document.querySelector('.player-two-container');
+        const nextPlayerButton = document.querySelector('button.next-player');
+        const startGame = document.querySelector('button.start-game');
+
+        allShips.forEach(ship => ship.remove());
+        playerOne.classList.toggle('active');
+        playerOne.classList.toggle('inactive');
+        playerTwo.classList.toggle('active');
+        playerTwo.classList.toggle('inactive');
+        nextPlayerButton.classList.toggle('inactive');
+        startGame.classList.toggle('inactive')
+    }
+
+    const nextPlayerPlacement = () => {
+        if (!checkShipsPlaced()) return; 
+
+        changePlayerDisplay()
+        displayShips();
+    }
+
+    const nextPlayerButton = () => {
+        const button = document.querySelector('button.next-player');
+        button.addEventListener('click', nextPlayerPlacement)
+    }
+
+    const startGameVsCPU = () => {
+        //
+    }
+
+    const changePlayer = () => {
+        const activePlayer = document.querySelector('.player.active');
+        const inactivePlayer = document.querySelector('.player.inactive');
+
+        activePlayer.classList.toggle('active')
+        activePlayer.classList.toggle('inactive')
+        inactivePlayer.classList.toggle('active')
+        inactivePlayer.classList.toggle('inactive')
+    }
+
+    // const startGameVsPlayer = () => {
+    //     const button = document.querySelector('button.start-game')
+    //     button.addEventListener('click', () => {
+    //         if (!checkShipsPlaced()) return;
+
+    //         document.querySelector('.controller-container').classList.toggle('inactive');
+    //         document.querySelector('button.next-player').classList.toggle('inactive')
+    //     });
+    // }
+
+    const addControllerListeners = () => {
+        resetButton()
+        randomButton();
+    }
+
+    const displayBothBoards = () => {
+        const playerOne = document.querySelector('.player-one-container');
+
+        playerOne.classList.toggle('inactive');
+        playerOne.classList.toggle('active');
+    }
+
+    const selectMode = () => {
+        const gameModeContainer = document.querySelector('.game-mode-container');
+        const gameContainer = document.querySelector('.game-container');
+        const playerOne = document.querySelector('.player-one-container');
+        const controllerContainer = document.querySelector('.controller-container');
+        const startButton = document.querySelector('button.start-game')
+
+        gameModeContainer.classList.toggle('active');
+        gameModeContainer.classList.toggle('inactive');
+        gameContainer.classList.toggle('inactive');
+        playerOne.classList.toggle('inactive');
+        playerOne.classList.toggle('active');
+        controllerContainer.classList.toggle('inactive')
+        startButton.classList.toggle('inactive')
+
+        addControllerListeners()
     }
 
     return {
+        selectMode,
         displayBoards,
-        displayShipsPlayerOne,
-        displayShipsPlayerTwo,
-        resetButton
+        displayShips,
+        resetButton,
+        randomButton,
+        nextPlayerButton,
+        changePlayer
     }
 }
 
