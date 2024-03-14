@@ -283,22 +283,12 @@ const DOM = () => {
         return allShips.length >= 5;
     }
 
-    const placeShipsOnBoard = () => {
-        const allCellsUsed = getAllCellsUsed();
-        allCellsUsed.forEach(cell => {
-            const [row, col] = cell;
-            document.querySelector(`.active .cell[data-row="${row}"][data-col="${col}"]`).classList.toggle('ship-placed')
-        })
-    }
-
     const changePlayerDisplay = () => {
-        const allShips = document.querySelectorAll('.active .ship');
         const playerOne = document.querySelector('.player-one-container');
         const playerTwo = document.querySelector('.player-two-container');
         const nextPlayerButton = document.querySelector('button.next-player');
         const startGame = document.querySelector('button.start-game');
 
-        allShips.forEach(ship => ship.remove());
         playerOne.classList.toggle('active');
         playerOne.classList.toggle('inactive');
         playerTwo.classList.toggle('active');
@@ -308,20 +298,10 @@ const DOM = () => {
     }
 
     const nextPlayerPlacement = () => {
-        if (!checkShipsPlaced()) return; 
-
         changePlayerDisplay()
         displayShips();
     }
 
-    const nextPlayerButton = () => {
-        const button = document.querySelector('button.next-player');
-        button.addEventListener('click', nextPlayerPlacement)
-    }
-
-    const startGameVsCPU = () => {
-        //
-    }
 
     const changePlayer = () => {
         const activePlayer = document.querySelector('.player.active');
@@ -332,16 +312,6 @@ const DOM = () => {
         inactivePlayer.classList.toggle('active')
         inactivePlayer.classList.toggle('inactive')
     }
-
-    // const startGameVsPlayer = () => {
-    //     const button = document.querySelector('button.start-game')
-    //     button.addEventListener('click', () => {
-    //         if (!checkShipsPlaced()) return;
-
-    //         document.querySelector('.controller-container').classList.toggle('inactive');
-    //         document.querySelector('button.next-player').classList.toggle('inactive')
-    //     });
-    // }
 
     const addControllerListeners = () => {
         resetButton()
@@ -355,7 +325,7 @@ const DOM = () => {
         playerOne.classList.toggle('active');
     }
 
-    const selectMode = () => {
+    const loadVsPlayer = () => {
         const gameModeContainer = document.querySelector('.game-mode-container');
         const gameContainer = document.querySelector('.game-container');
         const playerOne = document.querySelector('.player-one-container');
@@ -373,14 +343,49 @@ const DOM = () => {
         addControllerListeners()
     }
 
+    const removeCells = () => {
+        const allCells = document.querySelectorAll('.cell');
+        allCells.forEach(cell => cell.remove());
+    }   
+
+    const resetGame = () => {
+        const gameModeContainer = document.querySelector('.game-mode-container')
+        const gameContainer = document.querySelector('.game-container')
+        const activePlayer = document.querySelector('.game-container .active')
+        console.log('hey', activePlayer)
+        const nextPlayerButton = document.querySelector('button.next-player')
+        const winnerContainer = document.querySelector('.winner-container')
+
+        gameModeContainer.classList.toggle('inactive')
+        gameContainer.classList.toggle('inactive')
+        activePlayer.classList.toggle('active')
+        activePlayer.classList.toggle('inactive')
+        nextPlayerButton.classList.toggle('inactive')
+        winnerContainer.classList.toggle('inactive')
+
+        removeCells()
+    }
+
+    const displayWinner = (playerName) => {
+        const winnerContainer = document.querySelector('.winner-container')
+        winnerContainer.classList.toggle('inactive')
+        
+        const winnerMessage = document.querySelector('.winner-message')
+        winnerMessage.textContent = `${playerName} wins!`
+    }
+
     return {
-        selectMode,
+        loadVsPlayer,
         displayBoards,
         displayShips,
         resetButton,
         randomButton,
-        nextPlayerButton,
-        changePlayer
+        changePlayer,
+        checkShipsPlaced,
+        getShipCoordinates,
+        nextPlayerPlacement,
+        displayWinner,
+        resetGame
     }
 }
 

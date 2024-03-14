@@ -3,16 +3,16 @@ export default class Ship {
     this.name = name;
     this.length = length;
     this.position = [];
-    this.hits = 0;
+    this.totalHits = 0;
     this.sunk = false;
   }
 
   getHit() {
-    this.hits += 1;
+    this.totalHits += 1;
     this.isSunk();
   }
 
   isSunk() {
-    this.sunk = this.hits >= this.length;
+    this.sunk = this.totalHits >= this.length;
   }
 }
