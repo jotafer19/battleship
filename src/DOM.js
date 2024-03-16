@@ -231,11 +231,6 @@ const DOM = () => {
         shipListeners()
     }
 
-    const resetButton = () => {
-        const button = document.querySelector('button.reset-board');
-        button.addEventListener('click', resetBoard)
-    }
-
     const getRandomCoordinates = () => {
         const row = Math.floor(Math.random() * 10);
         const col = Math.floor(Math.random() * 10);
@@ -272,14 +267,17 @@ const DOM = () => {
         })
     }
 
-    const randomButton = () => {
-        const button = document.querySelector('button.randomize');
-        button.addEventListener('click', placeRandomly)
+    const placeComputerShips = () => {
+        const playerOne = document.querySelector('.player-one-container');
+        const playerTwo = document.querySelector('.player-two-container');
+
+        playerOne.classList.toggle('active')
+        playerTwo.classList.toggle('active');
+        placeRandomly()
     }
 
     const checkShipsPlaced = () => {
         const allShips = document.querySelectorAll('.active .cell .ship');
-
         return allShips.length >= 5;
     }
 
@@ -302,7 +300,6 @@ const DOM = () => {
         displayShips();
     }
 
-
     const changePlayer = () => {
         const activePlayer = document.querySelector('.player.active');
         const inactivePlayer = document.querySelector('.player.inactive');
@@ -313,34 +310,37 @@ const DOM = () => {
         inactivePlayer.classList.toggle('inactive')
     }
 
-    const addControllerListeners = () => {
-        resetButton()
-        randomButton();
-    }
-
     const displayBothBoards = () => {
-        const playerOne = document.querySelector('.player-one-container');
-
-        playerOne.classList.toggle('inactive');
-        playerOne.classList.toggle('active');
+        const playerOne = document.querySelector('.player-one-container')
+        const playerTwo = document.querySelector('.player-two-container')
+        const shipContainers = document.querySelectorAll('.ship-container');
+        playerTwo.classList.toggle('inactive');
+        shipContainers.forEach(container => container.classList.toggle('inactive'));
     }
 
-    const loadVsPlayer = () => {
+    const loadGame = () => {
         const gameModeContainer = document.querySelector('.game-mode-container');
         const gameContainer = document.querySelector('.game-container');
         const playerOne = document.querySelector('.player-one-container');
         const controllerContainer = document.querySelector('.controller-container');
-        const startButton = document.querySelector('button.start-game')
 
-        gameModeContainer.classList.toggle('active');
         gameModeContainer.classList.toggle('inactive');
         gameContainer.classList.toggle('inactive');
         playerOne.classList.toggle('inactive');
         playerOne.classList.toggle('active');
         controllerContainer.classList.toggle('inactive')
-        startButton.classList.toggle('inactive')
+    }
 
-        addControllerListeners()
+    const loadVsPlayer = () => {
+        loadGame()
+        const startButton = document.querySelector('button.start-game')
+        startButton.classList.toggle('inactive')
+    }
+
+    const loadVsComputer = () => {
+        loadGame()
+        const nextPlayerButton = document.querySelector('button.next-player')
+        nextPlayerButton.classList.toggle('inactive')
     }
 
     const removeCells = () => {
@@ -348,18 +348,26 @@ const DOM = () => {
         allCells.forEach(cell => cell.remove());
     }   
 
+    const vsPlayerDisplayBothBoards = () => {
+        const activePlayer = document.querySelector('.player.active');
+        const inactivePlayer = document.querySelector('.player.inactive');
+
+        activePlayer.classList.toggle('active')
+        inactivePlayer.classList.toggle('inactive')
+    }
+
     const resetGame = () => {
         const gameModeContainer = document.querySelector('.game-mode-container')
         const gameContainer = document.querySelector('.game-container')
-        const activePlayer = document.querySelector('.game-container .active')
-        console.log('hey', activePlayer)
+        const allShipContainer = document.querySelectorAll('.ship-container')
+        const allPlayerContainer = document.querySelectorAll('.player')
         const nextPlayerButton = document.querySelector('button.next-player')
         const winnerContainer = document.querySelector('.winner-container')
 
         gameModeContainer.classList.toggle('inactive')
         gameContainer.classList.toggle('inactive')
-        activePlayer.classList.toggle('active')
-        activePlayer.classList.toggle('inactive')
+        allShipContainer.forEach(container => container.classList.toggle('inactive'))
+        allPlayerContainer.forEach(container => container.classList.toggle('inactive'))
         nextPlayerButton.classList.toggle('inactive')
         winnerContainer.classList.toggle('inactive')
 
@@ -376,16 +384,20 @@ const DOM = () => {
 
     return {
         loadVsPlayer,
+        loadVsComputer,
         displayBoards,
         displayShips,
-        resetButton,
-        randomButton,
+        resetBoard,
+        placeRandomly,
         changePlayer,
         checkShipsPlaced,
         getShipCoordinates,
         nextPlayerPlacement,
         displayWinner,
-        resetGame
+        resetGame,
+        displayBothBoards,
+        placeComputerShips,
+        vsPlayerDisplayBothBoards
     }
 }
 
