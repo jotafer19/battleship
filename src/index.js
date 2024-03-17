@@ -8,9 +8,7 @@ const vsPlayer = () => {
     playerTwo.setEnemyBoard(playerOne.getBoard());
 
     const dom = DOM();
-    dom.loadVsPlayer();
-    dom.displayBoards();
-    dom.displayShips()
+    dom.initVsPlayer();
 
     const nextPlayerButton = document.querySelector('button.next-player')
     nextPlayerButton.addEventListener('click', () => {
@@ -104,9 +102,7 @@ const vsComputer = () => {
     computer.setEnemyBoard(player.getBoard())
 
     const dom = DOM();
-    dom.loadVsComputer();
-    dom.displayBoards();
-    dom.displayShips()
+    dom.initVsComputer();
 
     const placeComputerShips = () => {
         dom.placeComputerShips()
@@ -203,6 +199,7 @@ const vsComputer = () => {
 
 const playGame = () => {
     const dom = DOM();
+    
     const resetBoardButton = document.querySelector('button.reset-board')
     resetBoardButton.addEventListener('click', dom.resetBoard)
 

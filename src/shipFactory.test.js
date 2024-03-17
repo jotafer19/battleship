@@ -9,7 +9,7 @@ describe('Ship tests', () => {
 
   test('Check ship getting hit', () => {
     ship.getHit();
-    expect(ship.hits).toBe(1);
+    expect(ship.totalHits).toBe(1);
   })
 
   test('Check ship is sunk', () => {

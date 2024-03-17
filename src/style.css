@@ -1,7 +1,32 @@
+@font-face {
+  font-family: 'Orbitron';
+  src: url('./Orbitron-Regular.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Orbitron-Bold';
+  src: url('./Orbitron-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+:root {
+  --background-color: #cffafe;
+  --button-primary-color: #7dd3fc;
+  --button-secondary-color: #0ea5e9;
+  --cell-hover: #0369a1;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+body {
+  background-color: var(--background-color);
 }
 
 .header {
@@ -9,6 +34,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Orbitron-Bold';
+  font-size: 3rem;
 }
 
 .main {
@@ -18,9 +45,35 @@
   justify-content: space-around;
   align-items: center;
   position: relative;
+  font-family: 'Orbitron';
 }
 
-.game-mode-container,
+.game-mode-container {
+  width: 100svw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.game-mode {
+  width: 200px;
+  height: 100px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 1.2rem;
+  background-color: var(--button-primary-color);
+  cursor: pointer;
+}
+
+.game-mode:hover {
+  background-color: var(--button-secondary-color);
+}
+
 .game-container {
   width: 100svw;
   display: flex;
@@ -28,20 +81,10 @@
   align-items: center;
 }
 
-.game-mode {
-  width: 100px;
-  height: 100px;
-  border: 1px solid black;
-}
-
-.game-mode:hover {
-  background-color: grey;
-}
-
 .player-one-container,
 .player-two-container {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .board {
@@ -51,6 +94,7 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   position: relative;
+  background-color: white;
 }
 
 .cell {
@@ -64,22 +108,30 @@
 }
 
 .cell.drag-over {
-  border: 2px dashed blue;
+  border: 2px dashed var(--background-color);
+  background-color: var(--cell-hover);
 }
 
 .ship-container {
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 300px;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  justify-items: center;
+  align-items: center;  
   gap: 1rem;
+}
+
+.placement-message {
+  font-family: 'Orbitron';
+  font-size: 1.4rem;
 }
 
 .ship {
   background-color: grey;
   display: grid;
   grid-auto-flow: column;
-  border-radius: 2rem;
+  cursor: move;
+  border-radius: 5rem;
 }
 
 .ship.dragged {
@@ -89,6 +141,26 @@
 .ship-part {
   height: 50px;
   width: 50px;
+}
+
+#carrier {
+  background-color: #a3e635;
+}
+
+#battleship {
+  background-color: #fbbf24;
+}
+
+#destroyer {
+  background-color: #34d399;
+}
+
+#submarine {
+  background-color: #fb923c;
+}
+
+#patrol {
+  background-color: #dc2626;
 }
 
 .cell.hit {

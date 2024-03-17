@@ -382,11 +382,21 @@ const DOM = () => {
         winnerMessage.textContent = `${playerName} wins!`
     }
 
+    const initVsPlayer = () => {
+        loadVsPlayer();
+        displayBoards();
+        displayShips()
+    }
+
+    const initVsComputer = () => {
+        loadVsComputer();
+        displayBoards();
+        displayShips()
+    }
+
     return {
-        loadVsPlayer,
-        loadVsComputer,
-        displayBoards,
-        displayShips,
+        initVsPlayer,
+        initVsComputer,
         resetBoard,
         placeRandomly,
         changePlayer,

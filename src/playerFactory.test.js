@@ -1,30 +1,22 @@
-import Player from "./playerFactory";
+import {Player, Computer} from "./playerFactory";
 
 describe('Player tests', () => {
     const player = new Player('player');
-    const computer = new Player('computer');
+    const computer = new Computer('computer');
+    player.setEnemyBoard(computer.getBoard())
+    computer.setEnemyBoard(player.getBoard())
 
-    player.board.placeShips('carrier', [0, 0], "row");
-    computer.board.placeShips('carrier', [9, 5], "row");
+    computer.addShip('carrier', 5, [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4]])
 
     test('Player attacks and hits', () => {
-        expect(player.playerAttack([9, 9], computer.board)).toBeTruthy();
+        expect(player.playerAttack([0, 0], computer.board)).toBeTruthy();
     })
 
     test('Player attacks and miss', () => {
         expect(player.playerAttack([8, 6], computer.board)).toBeFalsy();
     })
 
-    test('Player attacks a cell already attacked', () => {
-        expect(player.playerAttack([8, 6], computer.board)).toBeUndefined();
-    })
-
     test('Computer attacks randomly', () => {
-        expect(computer.computerAttack(player.board)).not.toBeUndefined()
-    })
-
-    test('Turn change', () => {
-        player.changeTurn();
-        expect(player.turn).toBeTruthy();
+        expect(computer.computerAttacks()).not.toBeUndefined()
     })
 })

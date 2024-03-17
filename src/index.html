@@ -11,13 +11,23 @@
     <header class="header">Battleship</header>
     <main class="main">
       <div class="game-mode-container">
-        <div class="game-mode vs-CPU">Player vs CPU</div>
-        <div class="game-mode vs-player">Player vs Player</div>
+        <div class="game-mode vs-CPU">
+          <p>Player</p>
+          <p>vs.</p>
+          <p>CPU</p>
+        </div>
+        <div class="game-mode vs-player">
+          <p>Player</p>
+          <p>vs.</p>
+          <p>Player</p>
+        </div>
       </div>
       <div class="game-container inactive">
         <div class="player-one-container player inactive">
           <div class="player-one board"></div>
-          <div class="player-one ship-container"></div>
+          <div class="player-one ship-container">
+            <div class="placement-message">Place your fleet</div>
+          </div>
         </div>
         <div class="player-two-container player inactive">
           <div class="player-two board"></div>
