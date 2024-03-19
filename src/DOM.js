@@ -331,6 +331,14 @@ const DOM = () => {
         controllerContainer.classList.toggle('inactive')
     }
 
+    const displayNames = (playerOne, playerTwo) => {
+        const playerOneName = document.querySelector('.player-one.display-name')
+        const playerTwoName = document.querySelector('.player-two.display-name')
+
+        playerOneName.textContent = `${playerOne.name} board`
+        playerTwoName.textContent = `${playerTwo.name} board`;
+    }
+
     const loadVsPlayer = () => {
         loadGame()
         const startButton = document.querySelector('button.start-game')
@@ -363,6 +371,7 @@ const DOM = () => {
         const allPlayerContainer = document.querySelectorAll('.player')
         const nextPlayerButton = document.querySelector('button.next-player')
         const winnerContainer = document.querySelector('.winner-container')
+        const turn = document.querySelector('.game-log')
 
         gameModeContainer.classList.toggle('inactive')
         gameContainer.classList.toggle('inactive')
@@ -370,6 +379,7 @@ const DOM = () => {
         allPlayerContainer.forEach(container => container.classList.toggle('inactive'))
         nextPlayerButton.classList.toggle('inactive')
         winnerContainer.classList.toggle('inactive')
+        turn.textContent = ""
 
         removeCells()
     }
@@ -382,16 +392,23 @@ const DOM = () => {
         winnerMessage.textContent = `${playerName} wins!`
     }
 
-    const initVsPlayer = () => {
+    const initVsPlayer = (playerOne, playerTwo) => {
         loadVsPlayer();
+        displayNames(playerOne, playerTwo)
         displayBoards();
         displayShips()
     }
 
-    const initVsComputer = () => {
+    const initVsComputer = (player, computer) => {
         loadVsComputer();
+        displayNames(player, computer)
         displayBoards();
         displayShips()
+    }
+
+    const displayGameLog = (playerTurn) => {
+        const gameLog = document.querySelector('.game-log');
+        gameLog.textContent = `${playerTurn.name} turn`
     }
 
     return {
@@ -407,7 +424,8 @@ const DOM = () => {
         resetGame,
         displayBothBoards,
         placeComputerShips,
-        vsPlayerDisplayBothBoards
+        vsPlayerDisplayBothBoards,
+        displayGameLog
     }
 }
 

@@ -1,6 +1,32 @@
 import DOM from "./DOM.js"
 import { Player, Computer } from "./playerFactory.js"
 
+const setCountdown = () => {
+    const countdownElement = document.querySelector('.countdown')
+    let countdown = 5;
+
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+        if (countdown <= 0) {
+            clearInterval(countdownInterval)
+            countdownElement.textContent = "Change!"
+        }
+    }, 1000)
+    countdownElement.textContent = 5
+    return countdownInterval;
+}
+
+const displayCountdown = () => {
+    const element = document.querySelector('.change-player-container');
+    const gameLog = document.querySelector('.game-log')
+    const gameContainer = document.querySelector('.game-container');
+
+    element.classList.toggle('inactive')
+    gameLog.classList.toggle('inactive')
+    gameContainer.classList.toggle('inactive')
+}
+
 const vsPlayer = () => {
     const playerOne = new Player('Player 1')
     const playerTwo = new Player('Player 2')
@@ -8,7 +34,11 @@ const vsPlayer = () => {
     playerTwo.setEnemyBoard(playerOne.getBoard());
 
     const dom = DOM();
-    dom.initVsPlayer();
+    dom.initVsPlayer(playerOne, playerTwo);
+
+    const playerActive = () => {
+        return playerOne.turn ? playerOne : playerTwo
+    }
 
     const nextPlayerButton = document.querySelector('button.next-player')
     nextPlayerButton.addEventListener('click', () => {
@@ -40,6 +70,7 @@ const vsPlayer = () => {
         const allShipContainers = document.querySelectorAll('.ship-container')
         allShipContainers.forEach(container => container.classList.toggle('inactive'))
         playerOne.turn = true;
+        dom.displayGameLog(playerActive())
         playerOneCells.forEach(cell => cell.addEventListener('click', playerTwoAction))
         playerTwoCells.forEach(cell => cell.addEventListener('click', playerOneAction))
     }
@@ -58,7 +89,7 @@ const vsPlayer = () => {
     }
 
     const playerAction = (event) => {
-        const activePlayer = playerOne.turn ? playerOne : playerTwo;
+        const activePlayer = playerActive()
         if (event.target.classList.contains('hit') || event.target.classList.contains('miss')) return;
         const coordinates = [parseInt(event.target.dataset.row), parseInt(event.target.dataset.col)]
         const isHit = activePlayer.playerAttack(coordinates);
@@ -77,7 +108,13 @@ const vsPlayer = () => {
             event.target.classList.add('miss')
             changeTurn()
             setTimeout(() => {
-                dom.changePlayer()
+                setCountdown()
+                displayCountdown();
+                setTimeout(() => {
+                    displayCountdown()
+                    dom.displayGameLog(playerActive())
+                    dom.changePlayer()
+                }, 6000)
             }, 1000)
         }
     }
@@ -102,7 +139,11 @@ const vsComputer = () => {
     computer.setEnemyBoard(player.getBoard())
 
     const dom = DOM();
-    dom.initVsComputer();
+    dom.initVsComputer(player, computer);
+
+    const activePlayer = () => {
+        return player.turn ? player : computer
+    }
 
     const placeComputerShips = () => {
         dom.placeComputerShips()
@@ -133,6 +174,7 @@ const vsComputer = () => {
         computerCells.forEach(cell => cell.addEventListener('click', playerAction))
         placeComputerShips()
 
+        dom.displayGameLog(activePlayer())
         dom.displayBothBoards()
     }
 
@@ -167,7 +209,12 @@ const vsComputer = () => {
         } else if (!isHit) {
             cell.classList.add('miss')
         }
-        changeTurn();
+
+        setTimeout(() => {
+            changeTurn();
+            dom.displayGameLog(activePlayer())
+        }, 1000)
+
     }
 
     const playerAction = (event) => {
@@ -189,6 +236,7 @@ const vsComputer = () => {
             event.target.classList.add('miss')
         }
         changeTurn()
+        dom.displayGameLog(activePlayer())
         setTimeout(() => {
             computerAction()
         }, 1000)
