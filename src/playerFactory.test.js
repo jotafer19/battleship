@@ -1,4 +1,4 @@
-import {Player, Computer} from "./playerFactory";
+import {Player, Computer} from "./playerFactory.js";
 
 describe('Player tests', () => {
     const player = new Player('player');

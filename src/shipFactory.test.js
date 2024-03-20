@@ -1,4 +1,4 @@
-import Ship from "./shipFactory";
+import Ship from "./shipFactory.js";
 
 describe('Ship tests', () => {
   const ship = new Ship('destroyer', 3);

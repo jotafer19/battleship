@@ -1,4 +1,4 @@
-import Board from "./boardFactory";
+import Board from "./boardFactory.js";
 
 describe('Board tests', () => {
   const board = new Board();
