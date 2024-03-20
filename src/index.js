@@ -1,5 +1,6 @@
 import DOM from "./DOM.js"
 import { Player, Computer } from "./playerFactory.js"
+import './style.css';
 
 const setCountdown = () => {
     const countdownElement = document.querySelector('.countdown')
