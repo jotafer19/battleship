@@ -102,21 +102,22 @@ const vsPlayer = () => {
                 dom.vsPlayerDisplayBothBoards()
                 playerOne.reset()
                 playerTwo.reset()
-                startGameButton.removeEventListener('click', startGameVsPlayer)
+                startGameButton.removeEventListener('click', startGameVsPlayer);
+                return;
             }
         } else if (!isHit) {
             event.target.classList.add('miss')
-            changeTurn()
-            setTimeout(() => {
-                setCountdown()
-                displayCountdown();
-                setTimeout(() => {
-                    displayCountdown()
-                    dom.displayGameLog(playerActive())
-                    dom.changePlayer()
-                }, 6000)
-            }, 1000)
         }
+        changeTurn()
+        setTimeout(() => {
+            setCountdown()
+            displayCountdown();
+            setTimeout(() => {
+                displayCountdown()
+                dom.displayGameLog(playerActive())
+                dom.changePlayer()
+            }, 6000)
+        }, 1000)
     }
 
     const playerOneAction = (event) => {
