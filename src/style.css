@@ -1,3 +1,16 @@
+:root {
+  --background-color: #cffafe;
+  --button-primary-color: #7dd3fc;
+  --button-secondary-color: #0ea5e9;
+  --cell-hover: #0369a1;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 @font-face {
   font-family: 'Orbitron';
   src: url('./Orbitron-Regular.ttf');
@@ -10,19 +23,6 @@
   src: url('./Orbitron-Bold.ttf');
   font-weight: bold;
   font-style: normal;
-}
-
-:root {
-  --background-color: #cffafe;
-  --button-primary-color: #7dd3fc;
-  --button-secondary-color: #0ea5e9;
-  --cell-hover: #0369a1;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {
